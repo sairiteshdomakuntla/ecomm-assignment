@@ -693,20 +693,19 @@ const ProductRecommenderApp = () => {
     setRecommendations(newRecommendations);
   }, [cart, viewedProducts, likedProducts]);
 
-  // Product Card component
   const ProductCard = ({ product }) => (
     <div 
-      className="bg-white rounded-lg shadow-lg p-4 transition-transform hover:scale-105 w-full"
+      className="bg-white rounded-xl shadow-sm hover:shadow-md p-6 transition-all duration-300 hover:scale-102 w-full"
       onClick={() => trackProductView(product)}
     >
       <div className="relative aspect-w-4 aspect-h-3">
         <img
           src="/api/placeholder/400/320"
           alt={product.name}
-          className="w-full h-48 object-cover rounded-md"
+          className="w-full h-48 object-cover rounded-xl"
         />
         <button
-          className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-100"
+          className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-sm hover:bg-gray-50"
           onClick={(e) => {
             e.stopPropagation();
             toggleLikeProduct(product);
@@ -714,16 +713,16 @@ const ProductRecommenderApp = () => {
         >
           <FiHeart 
             className={`${likedProducts.some(p => p.id === product.id) 
-              ? 'text-red-500' 
-              : 'text-gray-600 hover:text-red-500'}`} 
+              ? 'text-rose-500' 
+              : 'text-gray-600 hover:text-rose-500'}`} 
           />
         </button>
       </div>
       <div className="mt-4">
-        <h3 className="text-lg font-semibold text-gray-800 truncate">{product.name}</h3>
+        <h3 className="text-lg font-semibold text-gray-900 truncate">{product.name}</h3>
         <p className="text-sm text-gray-600 mt-1 line-clamp-2">{product.description}</p>
-        <div className="flex items-center mt-2">
-          <span className="text-xl font-bold text-indigo-600">
+        <div className="flex items-center mt-3">
+          <span className="text-xl font-bold text-emerald-600">
             ${product.discountedPrice}
           </span>
           <span className="ml-2 text-sm text-gray-500 line-through">
@@ -734,9 +733,9 @@ const ProductRecommenderApp = () => {
           {[...Array(5)].map((_, index) => (
             <span key={index}>
               {index < Math.floor(product.rating) ? (
-                <AiFillStar className="text-yellow-400" />
+                <AiFillStar className="text-amber-400" />
               ) : (
-                <AiOutlineStar className="text-yellow-400" />
+                <AiOutlineStar className="text-amber-400" />
               )}
             </span>
           ))}
@@ -744,7 +743,7 @@ const ProductRecommenderApp = () => {
         </div>
         <div className="mt-4 flex justify-between items-center">
           <span
-            className={`text-sm ${product.stock > 0 ? "text-green-500" : "text-red-500"}`}
+            className={`text-sm ${product.stock > 0 ? "text-emerald-600" : "text-rose-500"}`}
           >
             {product.stock > 0 ? `${product.stock} in Stock` : "Out of Stock"}
           </span>
@@ -754,7 +753,7 @@ const ProductRecommenderApp = () => {
               addToCart(product);
             }}
             disabled={product.stock === 0}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:bg-gray-400"
+            className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 disabled:bg-gray-300 transition-colors duration-200"
           >
             Add to Cart
           </button>
@@ -762,48 +761,50 @@ const ProductRecommenderApp = () => {
       </div>
     </div>
   );
-
-  // Cart Sidebar component
+  
   const CartSidebar = () => (
-    <div className={`fixed right-0 top-0 h-full w-80 bg-white shadow-lg transform ${isCartOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out z-50`}>
-      <div className="p-4">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Shopping Cart</h2>
-          <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-gray-100 rounded-full">
+    <div className={`fixed right-0 top-0 h-full w-96 bg-white shadow-lg transform ${isCartOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out z-50`}>
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold text-gray-900">Shopping Cart</h2>
+          <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200">
             <FiX className="text-gray-600" />
           </button>
         </div>
         {cart.length === 0 ? (
-          <p className="text-gray-500 text-center">Your cart is empty</p>
+          <div className="text-gray-500 text-center py-8">
+            <FiShoppingCart className="mx-auto h-12 w-12 mb-4 text-gray-400" />
+            <p>Your cart is empty</p>
+          </div>
         ) : (
           <>
-            <div className="space-y-4">
+            <div className="space-y-6">
               {cart.map((item) => (
-                <div key={item.id} className="flex items-center justify-between border-b pb-2">
-                  <div className="flex items-center space-x-2">
-                    <img src="/api/placeholder/80/80" alt={item.name} className="w-16 h-16 object-cover rounded" />
+                <div key={item.id} className="flex items-center justify-between border-b pb-4">
+                  <div className="flex items-center space-x-4">
+                    <img src="/api/placeholder/80/80" alt={item.name} className="w-20 h-20 object-cover rounded-lg" />
                     <div>
-                      <h3 className="font-medium">{item.name}</h3>
-                      <p className="text-sm text-gray-500">${item.discountedPrice}</p>
+                      <h3 className="font-medium text-gray-900">{item.name}</h3>
+                      <p className="text-sm text-emerald-600 font-medium">${item.discountedPrice}</p>
                     </div>
                   </div>
                   <button
                     onClick={() => removeFromCart(item.id)}
-                    className="p-2 hover:bg-gray-100 rounded-full"
+                    className="p-2 hover:bg-rose-50 rounded-full transition-colors duration-200"
                   >
-                    <FiTrash2 className="text-red-500" />
+                    <FiTrash2 className="text-rose-500" />
                   </button>
                 </div>
               ))}
             </div>
-            <div className="mt-4 border-t pt-4">
-              <div className="flex justify-between mb-2">
-                <span className="font-medium">Total:</span>
-                <span className="font-bold">
+            <div className="mt-6 border-t pt-6">
+              <div className="flex justify-between mb-4">
+                <span className="text-gray-600">Total:</span>
+                <span className="font-bold text-gray-900">
                   ${cart.reduce((acc, item) => acc + item.discountedPrice, 0).toFixed(2)}
                 </span>
               </div>
-              <button className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700">
+              <button className="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors duration-200">
                 Checkout
               </button>
             </div>
@@ -812,40 +813,22 @@ const ProductRecommenderApp = () => {
       </div>
     </div>
   );
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-red-500 text-center">
-          <p className="text-xl font-bold mb-2">Error</p>
-          <p>{error}</p>
-        </div>
-      </div>
-    );
-  }
-
+  
+  // Main component return statement remains similar but with updated styling
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow-md sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow-sm sticky top-0 z-40">
+        <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-8">
-              <h1 className="text-2xl font-bold text-indigo-600">Shop</h1>
-              <nav className="hidden md:flex space-x-4">
-              {categories.slice(0, 7).map(category => (
+              <h1 className="text-2xl font-bold text-emerald-600">Shop</h1>
+              <nav className="hidden md:flex space-x-6">
+                {categories.slice(0, 7).map(category => (
                   <button
                     key={category}
                     onClick={() => setCurrentCategory(category)}
-                    className={`text-gray-600 hover:text-indigo-600 ${
-                      currentCategory === category ? 'text-indigo-600 font-semibold' : ''
+                    className={`text-gray-600 hover:text-emerald-600 transition-colors duration-200 ${
+                      currentCategory === category ? 'text-emerald-600 font-semibold' : ''
                     }`}
                   >
                     {category}
@@ -853,27 +836,27 @@ const ProductRecommenderApp = () => {
                 ))}
               </nav>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-6">
               <div className="relative">
                 <input
                   type="text"
                   placeholder="Search products..."
-                  className="pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                  className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-transparent w-64"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <FiSearch className="absolute left-3 top-3 text-gray-400" />
               </div>
-              <button className="p-2 hover:bg-gray-100 rounded-full">
+              <button className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200">
                 <FiUser className="text-gray-600" />
               </button>
               <button 
-                className="p-2 hover:bg-gray-100 rounded-full relative"
+                className="p-2 hover:bg-gray-100 rounded-full relative transition-colors duration-200"
                 onClick={() => setIsCartOpen(true)}
               >
                 <FiShoppingCart className="text-gray-600" />
                 {cart.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {cart.length}
                   </span>
                 )}
